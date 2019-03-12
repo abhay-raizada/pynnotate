@@ -25,17 +25,21 @@ def get_model_data():
 
 def get_indices_description_from_oject(schema_manager, table_name):
     indices_description = {}
-    for index_name, index_obj in schema_manager.list_table_indexes(table_name):
+    index_name_obj_map = schema_manager.list_table_indexes(table_name)
+    for index_name in index_name_obj_map.keys():
+        index_obj = index_name_obj_map[index_name]
         indices_description[index_name] = {
             'columns': index_obj.get_unquoted_columns(),
-            'is_unique?': index_obj.s_unique(),
+            'is_unique?': index_obj.is_unique(),
             'is_primary?': index_obj.is_primary()
         }
     return indices_description
 
 def  get_column_description_from_object(schema_manager, table_name):
     columns_description = {}
-    for column_name, column_obj in schema_manager.list_table_columns(table_name):
+    column_name_obj_map = schema_manager.list_table_columns(table_name)
+    for column_name in column_name_obj_map.keys():
+        column_obj = column_name_obj_map[column_name]
         columns_description[column_name] = column_obj.to_dict()
     return columns_description
 

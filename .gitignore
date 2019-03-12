@@ -103,6 +103,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+*test.db
 
 # Spyder project settings
 .spyderproject

@@ -1,8 +1,10 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-from annotate import models, class_from_filename, table_name_from_filename, get_config_file
-import tempfile
+from annotate import(models, class_from_filename, get_column_description_from_object,
+table_name_from_filename, get_config_file, get_model_data, get_indices_description_from_oject)
+import sqlite3
+from orator import DatabaseManager
 
 def test_models():
   result = models('tests/fixture_models')
@@ -21,3 +23,68 @@ def test_table_name_from_filename():
 
 def test_get_config_file():
   assert get_config_file('tests/fixture_models/fixture_model_1.py') == {'DATABASES': { 'a': 1, 'b': 2 } }
+
+def test_get_column_description_from_object():
+  database = "test.db"
+  create_database(database)
+  config = {
+        'sqlite3': {
+          'driver': 'sqlite',
+          'database': database
+        }
+    }
+  db = DatabaseManager(config)
+  result = get_column_description_from_object(db.get_schema_manager(), 'tasks')
+  print(result)
+  assert result == {
+    'id': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 1, 'precision': 10, 'name': 'id', 'extra': {}, 'scale': 0, 'type': 'integer', 'notnull': False, 'fixed': False},
+    'status_id': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 0, 'precision': 10, 'name': 'status_id', 'extra': {}, 'scale': 0, 'type': 'integer', 'notnull': True, 'fixed': False},
+    'project_id': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 0, 'precision': 10, 'name': 'project_id', 'extra': {},'scale': 0, 'type': 'integer', 'notnull': True, 'fixed': False},
+    'name': { 'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 0, 'precision': 10, 'name': 'name', 'extra': {}, 'scale': 0, 'type': 'text', 'notnull': True, 'fixed': False},
+    'end_date': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 0, 'precision': 10, 'name': 'end_date', 'extra': {}, 'scale': 0, 'type': 'text', 'notnull': True, 'fixed': False},
+    'priority': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 0, 'precision': 10, 'name': 'priority', 'extra': {}, 'scale': 0, 'type': 'integer', 'notnull': False, 'fixed': False},
+    'begin_date': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
+      'pk': 0, 'precision': 10, 'name': 'begin_date', 'extra': {}, 'scale': 0, 'type': 'text', 'notnull': True, 'fixed': False}}
+  drop_database(database)
+
+def test_get_indices_description_from_object():
+  database = "test.db"
+  create_database(database)
+  config = {
+        'sqlite3': {
+          'driver': 'sqlite',
+          'database': database
+        }
+    }
+  db = DatabaseManager(config)
+  result = get_indices_description_from_oject(db.get_schema_manager(), 'tasks')
+  print(result)
+  assert result == {'primary': {'is_unique?': True, 'is_primary?': True, 'columns': ['id']}}
+  drop_database(database)
+
+def create_database(database):
+  sql_create_tasks_table = """CREATE TABLE IF NOT EXISTS tasks (
+                                  id integer PRIMARY KEY,
+                                  name text NOT NULL,
+                                  priority integer,
+                                  status_id integer NOT NULL,
+                                  project_id integer NOT NULL,
+                                  begin_date text NOT NULL,
+                                  end_date text NOT NULL,
+                                  FOREIGN KEY (project_id) REFERENCES projects (id)
+                              );"""
+
+  # create a database connection
+  conn = sqlite3.connect(database)
+  # create tasks table
+  c = conn.cursor()
+  c.execute(sql_create_tasks_table)
+
+def drop_database(database):
+  os.remove(database)
