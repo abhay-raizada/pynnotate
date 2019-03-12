@@ -51,4 +51,3 @@ def table_name_from_filename(model_file):
 def class_from_filename(model_file):
     return os.path.splitext(
     model_file)[0].replace('_', ' ').title().replace(' ', '')
-}
