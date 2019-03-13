@@ -8,20 +8,36 @@ def models(model_path = 'models'):
     return list(map(os.path.abspath,
     list(map(partial_join, os.listdir(model_path)))))
 
-def get_model_data():
-    db = DatabaseManager(get_config_file())
+def get_model_path_info_map(model_path, config_path):
+    db = DatabaseManager(get_config_file(config_path))
     schema_manager = db.get_schema_manager()
     file_info_map = {}
-    for model_path in models():
+    for model_path in models(model_path):
         _, model_file = os.path.split(model_path)
         table_name = table_name_from_filename(model_file)
         columns_description = get_column_description_from_object(schema_manager, table_name)
+        if not columns_description:
+            continue
         indices_description = get_indices_description_from_oject(schema_manager, table_name)
         file_info_map[model_path] = {
             'columns': columns_description,
             'indices': indices_description
         }
     return file_info_map
+
+def write_to_file(model_path, config_path = 'orator.py'):
+    path_info_map = get_model_path_info_map(model_path, config_path)
+    for model_file in path_info_map.keys():
+        add_data_to_file(model_file, path_info_map[model_file])
+
+def add_data_to_file(model_file, model_data):
+    with open(model_file, "r+") as f:
+        content = f.read()
+        f.seek(0, 0)
+        model_data_string = '"""' + str(model_data) +  '"""'
+        if content.startswith(model_data_string):
+            return
+        f.write(model_data_string + "\n" + content)
 
 def get_indices_description_from_oject(schema_manager, table_name):
     indices_description = {}
@@ -43,10 +59,10 @@ def  get_column_description_from_object(schema_manager, table_name):
         columns_description[column_name] = column_obj.to_dict()
     return columns_description
 
-def get_config_file(config_path='orator.py'):
+def get_config_file(config_path):
     config = {}
     exec(open(config_path).read(), {}, config)
-    return config
+    return config.get("databases", config.get("DATABASES", {}))
 
 def table_name_from_filename(model_file):
     return os.path.splitext(

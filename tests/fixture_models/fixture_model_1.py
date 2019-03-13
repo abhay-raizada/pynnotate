@@ -1,4 +1,6 @@
 DATABASES = {
-    'a': 1,
-    'b': 2
-}
+        'sqlite3': {
+          'driver': 'sqlite',
+          'database': 'test.db'
+        }
+    }

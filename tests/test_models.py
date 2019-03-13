@@ -2,7 +2,8 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from annotate import(models, class_from_filename, get_column_description_from_object,
-table_name_from_filename, get_config_file, get_model_data, get_indices_description_from_oject)
+  table_name_from_filename, get_config_file, get_model_path_info_map,
+  get_indices_description_from_oject, write_to_file)
 import sqlite3
 from orator import DatabaseManager
 
@@ -10,7 +11,7 @@ def test_models():
   result = models('tests/fixture_models')
   result.sort()
   result = list(map( lambda x: os.path.split(x)[1], result))
-  assert result == ['fixture_model_1.py', 'fixture_model_2.py']
+  assert result == ['fixture_model_1.py', 'fixture_model_2.py', 'tasks.py']
 
 def test_class_from_filename():
   assert class_from_filename('class_name.py') == 'ClassName'
@@ -22,7 +23,15 @@ def test_table_name_from_filename():
   assert table_name_from_filename('engine_model_names.py') == 'engine_model_names'
 
 def test_get_config_file():
-  assert get_config_file('tests/fixture_models/fixture_model_1.py') == {'DATABASES': { 'a': 1, 'b': 2 } }
+  assert get_config_file('tests/fixture_models/fixture_model_1.py') == {
+    'sqlite3': {'database': 'test.db', 'driver': 'sqlite'}}
+
+def test_write_to_file():
+  database = "test.db"
+  create_database(database)
+  write_to_file('tests/fixture_models/', 'tests/fixture_models/fixture_model_1.py')
+  assert open('tests/fixture_models/tasks.py').read() == '''"""{'indices': {'primary': {'is_unique?': True, 'columns': ['id'], 'is_primary?': True}}, 'columns': {'begin_date': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'begin_date', 'type': 'text', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'priority': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'priority', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': False}, 'id': {'pk': 1, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'id', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': False}, 'status_id': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'status_id', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'end_date': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'end_date', 'type': 'text', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'project_id': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'project_id', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'name': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'name', 'type': 'text', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}}}"""'''
+  drop_database(database)
 
 def test_get_column_description_from_object():
   database = "test.db"
