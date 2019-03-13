@@ -50,7 +50,6 @@ def formate_data(model_data):
 """
     columns_string = ''
     for _,column in columns.items():
-        print(column)
         columns_string += format_column(column)
     end_string = \
 """
@@ -71,7 +70,7 @@ def format_column(column_hash):
     pk = ''
     if column_hash['pk']:
         pk = 'primary_key'
-    return column_hash['name'] + ' ' + column_type + ' ' + notnull + ' ' + default + ' ' + pk + '\n'
+    return (column_hash['name'] + ' ' + column_type + ' ' + notnull + ' ' + default + ' ' + pk).strip() + '\n'
 
 def get_indices_description_from_oject(schema_manager, table_name):
     indices_description = OrderedDict()

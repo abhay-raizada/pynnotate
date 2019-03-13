@@ -35,7 +35,7 @@ def test_write_to_file():
   result = open(file_path).read()
   print(result)
   drop_database(database)
-  #truncate_file(file_path)
+  truncate_file(file_path)
   assert result == '''"""
 ====== Schema information
 
@@ -47,7 +47,8 @@ project_id integer not null
 begin_date text not null
 end_date text not null
 
-"""'''
+"""
+'''
 
 def test_get_column_description_from_object():
   database = "test.db"
