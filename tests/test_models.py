@@ -29,9 +29,25 @@ def test_get_config_file():
 def test_write_to_file():
   database = "test.db"
   create_database(database)
-  write_to_file('tests/fixture_models/', 'tests/fixture_models/fixture_model_1.py')
-  assert open('tests/fixture_models/tasks.py').read() == '''"""{'indices': {'primary': {'is_unique?': True, 'columns': ['id'], 'is_primary?': True}}, 'columns': {'begin_date': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'begin_date', 'type': 'text', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'priority': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'priority', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': False}, 'id': {'pk': 1, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'id', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': False}, 'status_id': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'status_id', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'end_date': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'end_date', 'type': 'text', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'project_id': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'project_id', 'type': 'integer', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}, 'name': {'pk': 0, 'unsigned': False, 'precision': 10, 'scale': 0, 'name': 'name', 'type': 'text', 'default': None, 'length': None, 'extra': {}, 'autoincrement': False, 'fixed': False, 'notnull': True}}}"""'''
+  file_path = 'tests/fixture_models/tasks.py'
+  config_path = 'tests/fixture_models/fixture_model_1.py'
+  write_to_file(os.path.dirname(file_path), config_path)
+  result = open(file_path).read()
+  print(result)
   drop_database(database)
+  #truncate_file(file_path)
+  assert result == '''"""
+====== Schema information
+
+id integer   primary_key
+name text not null
+priority integer
+status_id integer not null
+project_id integer not null
+begin_date text not null
+end_date text not null
+
+"""'''
 
 def test_get_column_description_from_object():
   database = "test.db"
@@ -97,3 +113,7 @@ def create_database(database):
 
 def drop_database(database):
   os.remove(database)
+
+def truncate_file(file_path):
+  with open(file_path, 'r+') as f:
+    f.truncate(0)
