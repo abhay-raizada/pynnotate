@@ -48,6 +48,7 @@ begin_date text not null
 end_date text not null
 
 """
+
 '''
 
 def test_get_column_description_from_object():

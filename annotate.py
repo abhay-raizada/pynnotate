@@ -44,17 +44,17 @@ def add_data_to_file(model_file, model_data):
 def formate_data(model_data):
     columns = model_data['columns']
     start_string = \
-"""\"\"\"
+'''"""
 ====== Schema information
 
-"""
+'''
     columns_string = ''
     for _,column in columns.items():
         columns_string += format_column(column)
     end_string = \
+'''
 """
-\"\"\"
-"""
+'''
     return start_string + columns_string + end_string
 
 def format_column(column_hash):
