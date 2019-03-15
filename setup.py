@@ -25,7 +25,7 @@ def get_packages():
 requirements = get_requirements('requirements.txt')
 setup(
     name="orator-annotate",
-    version="0.1.1",
+    version="0.2",
     packages=get_packages(),
     scripts=['orator_annotate.py'],
 
