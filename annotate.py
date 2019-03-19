@@ -4,6 +4,9 @@ from orator import DatabaseManager
 from collections import OrderedDict
 import yaml
 
+ANNOTATION_INDICATOR = "====== Schema information"
+STRING_MARKER = '"""'
+
 def models(model_path = 'models'):
     partial_join = partial(os.path.join, model_path)
     return list(map(os.path.abspath,
@@ -43,19 +46,11 @@ def add_data_to_file(model_file, model_data):
 
 def formate_data(model_data):
     columns = model_data['columns']
-    start_string = \
-'''"""
-====== Schema information
-
-'''
+    start_string = STRING_MARKER + "\n" + ANNOTATION_INDICATOR + "\n"
     columns_string = ''
     for _,column in columns.items():
         columns_string += format_column(column)
-    end_string = \
-'''
-"""
-'''
-    return start_string + columns_string + end_string
+    return start_string + columns_string + "\n" + STRING_MARKER
 
 def format_column(column_hash):
     column_type = column_hash['type']
