@@ -38,7 +38,6 @@ def test_write_to_file():
   truncate_file(file_path)
   assert result == '''"""
 ====== Schema information
-
 id integer   primary_key
 name text not null
 priority integer
@@ -48,7 +47,6 @@ begin_date text not null
 end_date text not null
 
 """
-
 '''
 
 def test_get_column_description_from_object():
