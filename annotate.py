@@ -4,13 +4,12 @@ from orator import DatabaseManager
 from collections import OrderedDict
 import yaml
 
+from lib.models import models
+from lib.settings import get_config_file
+
 ANNOTATION_INDICATOR = "====== Schema information"
 STRING_MARKER = '"""'
 
-def models(model_path = 'models'):
-    partial_join = partial(os.path.join, model_path)
-    return list(map(os.path.abspath,
-    list(map(partial_join, os.listdir(model_path)))))
 
 def get_model_path_info_map(model_path, config_path):
     db = DatabaseManager(get_config_file(config_path))
@@ -86,11 +85,6 @@ def  get_column_description_from_object(schema_manager, table_name):
         column_obj = column_name_obj_map[column_name]
         columns_description[column_name] = column_obj.to_dict()
     return columns_description
-
-def get_config_file(config_path):
-    config = {}
-    exec(open(config_path).read(), {}, config)
-    return config.get("databases", config.get("DATABASES", {}))
 
 def table_name_from_filename(model_file):
     return os.path.splitext(
