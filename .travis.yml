@@ -3,7 +3,7 @@ python:
 - '3.5'
 install:
 - pip install -r requirements.txt
-- pip install pytest
+- pip install pytest==4.3.0
 script: py.test
 deploy:
   provider: pypi
