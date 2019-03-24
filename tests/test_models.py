@@ -1,14 +1,13 @@
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-from annotate import(class_from_filename, get_column_description_from_object,
-  table_name_from_filename, get_model_path_info_map,
-  get_indices_description_from_oject, write_to_file)
-
-from lib.models import models
-from lib.settings import get_config_file
 import sqlite3
+import os
 from orator import DatabaseManager
+
+from lib.models import(
+    models, class_from_filename,
+    table_name_from_filename, _get_column_description_from_object,
+    _get_indices_description_from_oject
+)
+
 
 def test_models():
   result = models('tests/fixture_models')
@@ -25,33 +24,6 @@ def test_class_from_filename_multiple():
 def test_table_name_from_filename():
   assert table_name_from_filename('engine_model_names.py') == 'engine_model_names'
 
-def test_get_config_file():
-  assert get_config_file('tests/fixture_models/fixture_model_1.py') == {
-    'sqlite3': {'database': 'test.db', 'driver': 'sqlite'}}
-
-def test_write_to_file():
-  database = "test.db"
-  create_database(database)
-  file_path = 'tests/fixture_models/tasks.py'
-  config_path = 'tests/fixture_models/fixture_model_1.py'
-  write_to_file(os.path.dirname(file_path), config_path)
-  result = open(file_path).read()
-  print(result)
-  drop_database(database)
-  truncate_file(file_path)
-  assert result == '''"""
-====== Schema information
-id integer   primary_key
-name text not null
-priority integer
-status_id integer not null
-project_id integer not null
-begin_date text not null
-end_date text not null
-
-"""
-'''
-
 def test_get_column_description_from_object():
   database = "test.db"
   create_database(database)
@@ -62,7 +34,7 @@ def test_get_column_description_from_object():
         }
     }
   db = DatabaseManager(config)
-  result = get_column_description_from_object(db.get_schema_manager(), 'tasks')
+  result = _get_column_description_from_object(db.get_schema_manager(), 'tasks')
   print(result)
   assert result == {
     'id': {'unsigned': False, 'autoincrement': False, 'length': None, 'default': None,
@@ -91,7 +63,7 @@ def test_get_indices_description_from_object():
         }
     }
   db = DatabaseManager(config)
-  result = get_indices_description_from_oject(db.get_schema_manager(), 'tasks')
+  result = _get_indices_description_from_oject(db.get_schema_manager(), 'tasks')
   print(result)
   assert result == {'primary': {'is_unique?': True, 'is_primary?': True, 'columns': ['id']}}
   drop_database(database)
