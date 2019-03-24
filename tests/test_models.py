@@ -1,6 +1,8 @@
-import sqlite3
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from orator import DatabaseManager
+import sqlite3
 
 from lib.models import(
     models, class_from_filename,
