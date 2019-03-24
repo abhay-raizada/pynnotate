@@ -4,8 +4,8 @@ from orator import DatabaseManager
 from collections import OrderedDict
 import yaml
 
-from lib.models import models, get_model_path_info_map
-from lib.settings import get_config_file
+from annotatelib.models import models, get_model_path_info_map
+from annotatelib.settings import get_config_file
 
 ANNOTATION_INDICATOR = "====== Schema information"
 STRING_MARKER = '"""'

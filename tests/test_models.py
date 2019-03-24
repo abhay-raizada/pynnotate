@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../'
 from orator import DatabaseManager
 import sqlite3
 
-from lib.models import(
+from annotatelib.models import(
     models, class_from_filename,
     table_name_from_filename, _get_column_description_from_object,
     _get_indices_description_from_oject
