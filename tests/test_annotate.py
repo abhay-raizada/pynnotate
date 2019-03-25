@@ -19,7 +19,6 @@ def test_write_to_file():
   config_path = 'tests/fixture_models/fixture_model_1.py'
   write_to_file(os.path.dirname(file_path), config_path)
   result = open(file_path).read()
-  print(result)
   drop_database(database)
   truncate_file(file_path)
   assert result == '''"""

@@ -50,6 +50,4 @@ def format_column(column_hash, max_name_length):
     if column_hash['pk']:
         pk = 'primary_key'
     template = "{:<"+str(max_name_length+2)+"}{:<15}{:<10}{:<10}{:<10}"
-    print(template)
-    print(column_hash['name'], column_type, notnull, default, pk)
     return template.format(column_hash['name'], column_type, notnull, default, pk).strip() + "\n"
