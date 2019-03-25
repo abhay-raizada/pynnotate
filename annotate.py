@@ -27,12 +27,16 @@ def add_data_to_file(model_file, model_data):
 def formate_data(model_data):
     columns = model_data['columns']
     start_string = STRING_MARKER + "\n" + ANNOTATION_INDICATOR + "\n"
+    max_name_len = max_name_length(list(map(lambda c: c[0], columns.items())))
     columns_string = ''
     for _,column in columns.items():
-        columns_string += format_column(column)
+        columns_string += format_column(column, max_name_len)
     return start_string + columns_string + "\n" + STRING_MARKER
 
-def format_column(column_hash):
+def max_name_length(names):
+    return len(max(names))
+
+def format_column(column_hash, max_name_length):
     column_type = column_hash['type']
     if column_hash['length'] :
         column_type += '(' + column_hash['length'] + ')'
@@ -45,4 +49,7 @@ def format_column(column_hash):
     pk = ''
     if column_hash['pk']:
         pk = 'primary_key'
-    return (column_hash['name'] + ' ' + column_type + ' ' + notnull + ' ' + default + ' ' + pk).strip() + '\n'
+    template = "{:<"+str(max_name_length+2)+"}{:<15}{:<10}{:<10}{:<10}"
+    print(template)
+    print(column_hash['name'], column_type, notnull, default, pk)
+    return template.format(column_hash['name'], column_type, notnull, default, pk).strip() + "\n"
