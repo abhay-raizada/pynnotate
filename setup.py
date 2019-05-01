@@ -24,10 +24,10 @@ def get_packages():
 
 requirements = get_requirements('requirements.txt')
 setup(
-    name="orator-annotate",
-    version="0.1.2",
+    name="pynnotate",
+    version="0.2",
     packages=get_packages(),
-    scripts=['orator_annotate.py'],
+    scripts=['pynnotate.py'],
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine
@@ -54,5 +54,5 @@ setup(
     },
     entry_points={
         "console_scripts": [
-                  "orator-annotate=orator_annotate:main"]}
+                  "pynnotate=pynnotate:main"]}
 )

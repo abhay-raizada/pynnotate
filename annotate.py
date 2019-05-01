@@ -1,6 +1,5 @@
 import os
 from functools import  partial
-from orator import DatabaseManager
 from collections import OrderedDict
 import yaml
 
