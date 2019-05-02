@@ -1,4 +1,4 @@
-# orator-annotate
+# Pynnotate
 Annotate Python Models with schema Information.
 
 ![Build](https://travis-ci.com/abhsag24/orator-annotate.svg?branch=master)

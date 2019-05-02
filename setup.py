@@ -48,9 +48,9 @@ setup(
     keywords="hello world example examples",
     url="https://github.com/abhsag24/orator-annotate",   # project home page, if any
     project_urls={
-        "Bug Tracker": "https://github.com/abhsag24/orator-annotate/issues",
-        "Documentation": "https://github.com/abhsag24/orator-annotate/",
-        "Source Code": "https://github.com/abhsag24/orator-annotate/",
+        "Bug Tracker": "https://github.com/abhsag24/pynnotate/issues",
+        "Documentation": "https://github.com/abhsag24/pynnotate/",
+        "Source Code": "https://github.com/abhsag24/pynnotate/",
     },
     entry_points={
         "console_scripts": [
