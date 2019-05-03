@@ -4,13 +4,12 @@ from collections import OrderedDict
 import yaml
 
 from annotatelib.models import models, get_model_path_info_map
-from annotatelib.settings import get_config_file
 
 ANNOTATION_INDICATOR = "====== Schema information"
 STRING_MARKER = '"""'
 
-def write_to_file(model_path, config_path = 'orator.py'):
-    path_info_map = get_model_path_info_map(model_path, config_path)
+def write_to_file(model_path, db_name, db, db_host, db_user, db_password):
+    path_info_map = get_model_path_info_map(model_path, db_name, db, db_host, db_user, db_password)
     for model_file in path_info_map.keys():
         add_data_to_file(model_file, path_info_map[model_file])
 
@@ -18,12 +17,12 @@ def add_data_to_file(model_file, model_data):
     with open(model_file, "r+") as f:
         content = f.read()
         f.seek(0, 0)
-        model_data_string = formate_data(model_data)
+        model_data_string = format_data(model_data)
         if content.startswith(model_data_string):
             return
         f.write(model_data_string + "\n" + content)
 
-def formate_data(model_data):
+def format_data(model_data):
     columns = model_data['columns']
     start_string = STRING_MARKER + "\n" + ANNOTATION_INDICATOR + "\n"
     max_name_len = max_name_length(list(map(lambda c: c[0], columns.items())))
