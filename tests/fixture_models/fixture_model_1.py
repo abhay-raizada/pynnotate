@@ -1,6 +1,5 @@
-DATABASES = {
-        'sqlite3': {
-          'driver': 'sqlite',
-          'database': 'test.db'
-        }
-    }
+{ "sqlite3": {
+    "driver": "sqlite",
+    "database": "test.db"
+  }
+}

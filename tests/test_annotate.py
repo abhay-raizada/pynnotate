@@ -16,7 +16,7 @@ def test_write_to_file():
   database = "test.db"
   create_database(database)
   file_path = 'tests/fixture_models/tasks.py'
-  write_to_file(os.path.dirname(file_path), 'test.db', 'sqlite', '', '', '')
+  write_to_file(os.path.dirname(file_path), 'tests/fixture_models/fixture_model_1.py')
   result = open(file_path).read()
   drop_database(database)
   truncate_file(file_path)
