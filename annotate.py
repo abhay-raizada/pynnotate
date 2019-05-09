@@ -8,8 +8,8 @@ from annotatelib.models import models, get_model_path_info_map
 ANNOTATION_INDICATOR = "====== Schema information"
 STRING_MARKER = '"""'
 
-def write_to_file(model_path, db_name, db, db_host, db_user, db_password):
-    path_info_map = get_model_path_info_map(model_path, db_name, db, db_host, db_user, db_password)
+def write_to_file(model_path, config_path = 'pynnotate.json', **kwargs):
+    path_info_map = get_model_path_info_map(model_path, config_path, **kwargs)
     for model_file in path_info_map.keys():
         add_data_to_file(model_file, path_info_map[model_file])
 

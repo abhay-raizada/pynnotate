@@ -3,7 +3,7 @@ from functools import partial
 from orator import DatabaseManager
 from collections import OrderedDict
 
-from .settings import get_config_file, get_config
+from .settings import get_config_file
 def table_name_from_filename(model_file):
     return os.path.splitext(
     model_file)[0]
@@ -17,8 +17,8 @@ def models(model_path = 'models'):
     return list(map(os.path.abspath,
     list(map(partial_join, os.listdir(model_path)))))
 
-def get_model_path_info_map(model_path, db_name, db, db_host, db_user, db_password):
-    db = DatabaseManager(get_config(db_name, db, db_host, db_user, db_password))
+def get_model_path_info_map(model_path, config_path, **kwargs):
+    db = DatabaseManager(get_config_file(config_path, **kwargs))
     schema_manager = db.get_schema_manager()
     file_info_map = OrderedDict()
     for model_path in models(model_path):
