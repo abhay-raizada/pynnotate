@@ -15,7 +15,7 @@ def get_config_file(config_path, **kwargs):
     config = json.loads(open(config_path).read())
     return config
 
-def get_config(db_name, db, db_host, db_user, db_password):
+def get_config(db, db_name, db_host, db_user, db_password):
     insufficient_args_message = 'Insufficient Arguments: db_name, db, db_user, db_password'
     insufficient_args_sqlite_message = 'Insufficient Arguments: db_name, db'
     if not(db_name and db):
@@ -45,7 +45,7 @@ def get_config(db_name, db, db_host, db_user, db_password):
 def write_config(**kwargs):
     with open(CONFIG_FILE, "w+") as _file:
         config = get_config(
-            kwargs["db_name"], kwargs["db"], kwargs["db_host"],
+            kwargs["db"], kwargs["db_name"], kwargs["db_host"],
             kwargs["db_user"], kwargs["db_password"])
         _file.write(json.dumps(config, indent = 4))
     return CONFIG_FILE

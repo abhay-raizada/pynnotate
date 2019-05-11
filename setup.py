@@ -9,25 +9,12 @@ def get_requirements(filename):
         out.append(a.strip())
     return out
 
-def get_packages():
-    """Method to retrieve packages to be bundled."""
-    base_dir = '.'
-    packages = [base_dir]
-    for (path, dirs, files) in os.walk(base_dir):
-        try:
-            dirs.remove('__pycache__')
-        except ValueError:
-            pass
-        if '__init__.py' in files:
-            packages.extend([os.path.join(path, dir) for dir in dirs])
-    return packages
-
 requirements = get_requirements('requirements.txt')
 setup(
     name="pynnotate",
     version="0.2",
-    packages=get_packages(),
-    scripts=['pynnotate.py'],
+    packages=find_packages(),
+    scripts=['pynnotate.py', ],
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine
@@ -46,7 +33,7 @@ setup(
     description="Annotate models based database",
     license="MIT",
     keywords="hello world example examples",
-    url="https://github.com/abhsag24/orator-annotate",   # project home page, if any
+    url="https://github.com/abhsag24/pynnotate",   # project home page, if any
     project_urls={
         "Bug Tracker": "https://github.com/abhsag24/pynnotate/issues",
         "Documentation": "https://github.com/abhsag24/pynnotate/",
