@@ -4,6 +4,8 @@ python:
 install:
 - pip install -r requirements.txt
 - pip install pytest==4.3.0
+before_script:
+- python3 setup.py install
 script: py.test
 deploy:
   provider: pypi
