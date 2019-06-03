@@ -20,17 +20,16 @@ def test_write_to_file():
   result = open(file_path).read()
   drop_database(database)
   truncate_file(file_path)
-  assert result == '''"""
-====== Schema information
-id         integer                            primary_key
-name       text           not null
-priority   integer
-status_id  integer        not null
-project_id integer        not null
-begin_date text           not null
-end_date   text           not null
+  print(result)
+  assert result == '''#====== Schema information
+# id         integer                            primary_key
+# name       text           not null
+# priority   integer
+# status_id  integer        not null
+# project_id integer        not null
+# begin_date text           not null
+# end_date   text           not null
 
-"""
 '''
 
 def create_database(database):
