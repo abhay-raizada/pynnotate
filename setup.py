@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-import os
+
 
 def get_requirements(filename):
     """Method to get the requirements of the specified file."""
@@ -8,6 +8,7 @@ def get_requirements(filename):
     for a in file:
         out.append(a.strip())
     return out
+
 
 requirements = get_requirements('requirements.txt')
 setup(
@@ -41,5 +42,5 @@ setup(
     },
     entry_points={
         "console_scripts": [
-                  "pynnotate=pynnotate:main"]}
+            "pynnotate=pynnotate:main"]}
 )
