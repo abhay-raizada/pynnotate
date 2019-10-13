@@ -1,7 +1,7 @@
 # Pynnotate
 Annotate Python Models with schema Information.
 
-![Build](https://travis-ci.com/abhsag24/orator-annotate.svg?branch=master)
+![Build](https://api.travis-ci.org/abhsag24/pynnotate.svg?branch=production)
 
 ## Usage
 
