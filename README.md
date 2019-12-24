@@ -5,17 +5,19 @@ Annotate Python Models with schema Information.
 
 ## Usage
 
-    ```
-        pynnotate --model-path=<Path To Your Moidels> --config-path=<Path To database config>
-    ```
+```
+pynnotate --model-path=<Path To Your Moidels> --config-path=<Path To database config>
+```
 
 ## Installation
 
-    ```
-        pip install pynnotate
-    ```
-    Or to build from source:
+```
+pip install pynnotate
+```
 
-    ```
-        python setup.py install
-    ```
+Or to build from source:
+
+
+```
+python setup.py install
+```
